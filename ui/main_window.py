@@ -1,4 +1,5 @@
-from tkinter import Tk, Label, Button, Entry, Listbox, StringVar, Scrollbar, END, messagebox
+from tkinter import Tk, Label, Button, Entry, Listbox, END, StringVar, Scrollbar, Frame, messagebox
+from tkinter import ttk
 from services.task_service import add_task, list_tasks, complete_task, delete_task, save_tasks_to_file, load_tasks_from_file
 
 def refresh_task_list(task_list):
@@ -9,25 +10,24 @@ def refresh_task_list(task_list):
 def create_main_window():
     app = Tk()
     app.title("Gestión de Tareas")
-    app.geometry("600x600")
+    app.geometry("700x600")
 
     titulo_var = StringVar()
     descripcion_var = StringVar()
 
-    Label(app, text="Título:").pack()
-    Entry(app, textvariable=titulo_var).pack()
+    # Frame de entradas
+    input_frame = Frame(app, bg="#ECEFF1")
+    input_frame.grid(row=0, column=0, sticky="w")
 
-    Label(app, text="Descripción:").pack()
-    Entry(app, textvariable=descripcion_var).pack()
+    Label(input_frame, text="Título:", font=("Helvetica", 12, "bold"), bg="#ECEFF1").grid(row=0, column=0, sticky="w")
+    Entry(input_frame, textvariable=titulo_var, font=("Helvetica", 12), width=40, bd=2).grid(row=0, column=1)
 
-    task_list = Listbox(app, width=80, height=20)
-    task_list.pack()
+    Label(input_frame, text="Descripción:", font=("Helvetica", 12, "bold"), bg="#ECEFF1").grid(row=1, column=0, sticky="w", pady=10)
+    Entry(input_frame, textvariable=descripcion_var, font=("Helvetica", 12), width=40, bd=2).grid(row=1, column=1)
 
-    scrollbar = Scrollbar(app)
-    scrollbar.pack(side="right", fill="y")
-
-    task_list.config(yscrollcommand=scrollbar.set)
-    scrollbar.config(command=task_list.yview)
+    # Frame de botones con márgenes
+    button_frame = Frame(app, bg="#ECEFF1")
+    button_frame.grid(row=1, column=0, sticky="w")
 
     def add_task_ui():
         titulo = titulo_var.get()
@@ -87,11 +87,34 @@ def create_main_window():
             except Exception as e:
                 messagebox.showerror("Error", f"No se pudo exportar: {e}")
 
-    Button(app, text="Agregar Tarea", command=add_task_ui).pack()
-    Button(app, text="Marcar como Completada", command=complete_task_ui).pack()
-    Button(app, text="Eliminar Tarea Seleccionada", command=delete_selected_task_ui).pack()
-    Button(app, text="Importar Tareas", command=import_tasks_ui).pack()
-    Button(app, text="Exportar Tareas", command=export_tasks_ui).pack()
+    # Estilo para botones
+    button_style = {
+        "font": ("Helvetica", 12, "bold"),
+        "relief": "flat",
+        "cursor": "hand2",
+    }
+
+    # Botones organizados en 2 columnas
+    Button(button_frame, text="Agregar Tarea", command=add_task_ui,  bg="#673AB7", fg="white", **button_style).grid(row=0, column=0, padx=8, pady=8)
+    Button(button_frame, text="Marcar como Completada", command=complete_task_ui, bg="#673AB7", fg="white", **button_style).grid(row=1, column=1, padx=8, pady=8)
+
+    Button(button_frame, text="Eliminar Tarea Seleccionada", command=delete_selected_task_ui,  bg="#673AB7", fg="white", **button_style).grid(row=1, column=0, padx=8, pady=8)
+    Button(button_frame, text="Importar Tareas", command=import_tasks_ui, bg="#673AB7", fg="white", **button_style).grid(row=2, column=1, padx=8, pady=8)
+
+    Button(button_frame, text="Exportar Tareas", command=export_tasks_ui, bg="#673AB7", fg="white", **button_style).grid(row=2, column=0, padx=8, pady=8)
+
+    # Frame de lista de tareas
+    task_list_frame = Frame(app, bg="#ECEFF1")
+    task_list_frame.grid(row=2, column=0, padx=20, pady=20)
+
+    task_list = Listbox(task_list_frame, width=70, height=18, font=("Helvetica", 12), bd=2, relief="solid", bg="#FFFFFF")
+    task_list.grid(row=0, column=0)
+
+    scrollbar = Scrollbar(task_list_frame)
+    scrollbar.grid(row=0, column=1, sticky="ns")
+
+    task_list.config(yscrollcommand=scrollbar.set)
+    scrollbar.config(command=task_list.yview)
 
     refresh_task_list(task_list)
 
