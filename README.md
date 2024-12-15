@@ -1,6 +1,6 @@
-# Gestión de Tareas
+# Gestor de Tareas
 
-Este proyecto permite gestionar tareas mediante una interfaz gráfica de usuario con `Tkinter` y una base de datos SQL usando MYSQL.
+Este proyecto permite gestionar tareas mediante una interfaz gráfica de usuario con `Tkinter` y una base de datos SQL.
 
 ## Estructura del proyecto
 
@@ -12,13 +12,17 @@ Este proyecto permite gestionar tareas mediante una interfaz gráfica de usuario
 ## Requisitos
 
 - Python 3.x 
-- SQLAlchemy
-- Tkinter
+- pip
+- SQLAlchemy (pip install sqlalchemy)
+- Tkinter (interfaz gráfica)
+-dotoenv (pip install python-dotenv)
+-pymysql (pip install pymysql)
+- cryptography (pip install cryptography)
+
 
 ## Instalación
 
 1. Clona el repositorio.
-2. Configura la conexión en `database/__init__.py`.
 3. Ejecuta `app.py`.
 
 ## Uso
@@ -28,3 +32,7 @@ Este proyecto permite gestionar tareas mediante una interfaz gráfica de usuario
 3. Elimina tareas seleccionadas.
 4. Guarda o carga tareas desde `tasks.json`.
 
+![alt text](image.png)
+
+
+## Sonarqube
